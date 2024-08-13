@@ -1,0 +1,48 @@
+{% set currentLocale = app.request.locale %}
+{% set locales = app.request.attributes.get('locales') %}
+<footer class="footer fixed-bottom">
+  <div class="container">
+    <ul>
+      {% if locales|length %}
+        <li class="locale-selector">
+          <form name="localeSelector" action="{{ path('clp_change_locale') }}" method="post">
+            <select class="form-select form-select-sm" id="localeSelector" name="locale">
+              {% for key, locale in locales %}
+                <option {% if currentLocale == key %}selected{% endif %} value="{{ key }}">{{ locale|trans }}</option>
+              {% endfor %}
+            </select>
+          </form>
+        </li>
+      {% endif %}
+      <li>
+        <a target="_blank" href="https://www.cloudpanel.io/blog/" title="{% trans %}Blog{% endtrans %}">{% trans %}Blog{% endtrans %}</a>
+      </li>
+      <li>
+        <a target="_blank" href="https://www.cloudpanel.io/docs/v2/" title="{% trans %}Docs{% endtrans %}">{% trans %}Docs{% endtrans %}</a>
+      </li>
+      <li>
+        <a target="_blank" href="https://github.com/cloudpanel-io/cloudpanel-ce/issues" title="{% trans %}Issues{% endtrans %}">{% trans %}Issues{% endtrans %}</a>
+      </li>
+      <li>
+        <a target="_blank" href="https://www.cloudpanel.io/contact/" title="{% trans %}Contact{% endtrans %}">{% trans %}Contact{% endtrans %}</a>
+      </li>
+      <li>
+        © {{ "now"|date("Y") }} <a target="_blank" href="https://sequel.one">SEQUEL.ONE</a> {% if isAdminArea %}- v{{ app_version }}{% endif %}
+        <a target="_blank" id="update-available-button" class="btn btn-sm btn-outline-green btn-update" style="display:none;" href="https://www.cloudpanel.io/docs/v2/update">{% trans %}Update available{% endtrans %}</a>
+      </li>
+    </ul>
+  </div>
+</footer>
+{% if isAdminArea %}
+<script>
+jQuery(document).ready(function() {
+  jQuery.getJSON("{{path('clp_admin_app_version_check')}}", function() {})
+    .done(function(data) {
+      if (data.updateAvailable) {
+        jQuery('#update-available-button').show();
+      }
+    }
+  );
+});
+</script>
+{% endif %}

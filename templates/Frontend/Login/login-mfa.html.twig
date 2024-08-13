@@ -1,0 +1,39 @@
+{% extends 'Frontend/Login/layout.html.twig' %}
+
+{% block pageTitle %}{% trans %}Two-Factor Authentication{% endtrans %}{% endblock %}
+
+{% block body %}
+<div class="login-container">
+  <div class="logo">
+    <a href="{{ path('clp_login') }}">
+      <img src="{{ asset('/assets/images/logo.png') }}" alt="SEQUEL.ONE">
+    </a>
+  </div>
+  <div class="login-form-container">
+    <h2 class="text-center">{% trans %}Two-Factor Authentication{% endtrans %}</h2>
+    {{ include('Partial/flash-messages.html.twig', { 'flashBagMessages': app.session.flashbag.all }) }}
+    {{ include('Partial/form-errors.html.twig', { 'formErrors': formErrors }) }}
+    <div class="form-container">
+      {{ form_start(form) }}
+      <div class="row">
+        <div class="col">
+          <div class="form-group {{ (form_errors(form.mfaCode) ? 'has-error' : '') }}">
+            {{ form_widget(form.mfaCode) }}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group text-right">
+            {{ form_widget(form.submit) }}
+          </div>
+        </div>
+      </div>
+      {{ form_end(form) }}
+    </div>
+  </div>
+  {% block footer %}
+    {{ include('Frontend/Login/Partial/footer.html.twig') }}
+  {% endblock %}
+</div>
+{% endblock %}

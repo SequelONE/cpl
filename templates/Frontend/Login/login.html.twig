@@ -1,0 +1,44 @@
+{% extends 'Frontend/Login/layout.html.twig' %}
+{% block pageTitle %}{% trans %}Log In{% endtrans %}{% endblock %}
+{% block body %}
+<div class="login-container">
+  <div class="logo">
+    <a title="SEQUEL.ONE"  href="{{ path('clp_login') }}">
+      <img alt="SEQUEL.ONE" src="{{ asset('/assets/images/logo.png') }}">
+    </a>
+  </div>
+  <div class="login-form-container">
+    {{ include('Partial/flash-messages.html.twig', { 'flashBagMessages': app.session.flashbag.all }) }}
+    {% if authenticationError %}
+      <div class="alert-container">
+        <div class="alert alert-danger">
+          {{ authenticationError.messageKey|trans(authenticationError.messageData, 'security') }}
+        </div>
+      </div>
+    {% endif %}
+    <div class="form-container">
+      <form action="{{ path('clp_login') }}" method="post">
+        <div class="row">
+          <div class="col">
+            <input type="text" name="userName" required="required" autocomplete="username" class="form-control form-control-lg" placeholder="{% trans %}User Name{% endtrans %}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="password" name="password" required="required" autocomplete="current-password" class="form-control form-control-lg" placeholder="{% trans %}Password{% endtrans %}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <button type="submit" name="submit" class="btn btn-blue btn-login">{% trans %}Log In{% endtrans %}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% block footer %}
+    {{ include('Frontend/Login/Partial/footer.html.twig') }}
+  {% endblock %}
+</div>
+{% endblock %}
